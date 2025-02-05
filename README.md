@@ -12,7 +12,7 @@ The scripts are adapted from the [Azure Tools repository](https://github.com/win
 
 ### `Run the Rcript`
 
-To execute the tool, run the `runner.sh` script. It will start the tool based on `test_config.csv` and flaky test presnt inside the `data` folder. You can download more test data from our shared data directory and update the `test_config.csv` file accordingly to work with more data set.
+To execute the tool, run the `runner.sh` script. It will start the tool based on `test_config.csv` and flaky test present inside the `data` folder. You can download more test data from our shared data directory and update the `test_config.csv` file accordingly to work with more data set.
 
 ## `Input`
 
@@ -22,13 +22,13 @@ The input data is stored in the data folder, which contains zipped files. Our au
   Contains the source code that includes the flaky test. 
 
 - **`Fixed.patch`**:  
-  A patch file used to generate the fixed version of the source code from the `Flaky` folder. Used by **`flaky_analysis_tool.sh`** during execution.
+  A patch file used to generate the fixed version of the source code from the `Flaky` folder.
 
 - **`FixedCodeChange.patch`**:  
-  A patch file used to generate the fixed version with additional code changes from the `Flaky` folder. Used by **`flaky_analysis_tool.sh`** during execution.
+  A patch file used to generate the fixed version with additional code changes from the `Flaky` folder.
 
 - **`FlakyCodeChange.patch`**:  
-  A patch file used to generate the flaky version with additional code changes from the `Flaky` folder. This patch is applied by **`flaky_analysis_tool.sh`** during execution to prepare the required source for analysis.
+  A patch file used to generate the flaky version with additional code changes from the `Flaky` folder. 
 
 - **`Flakym2`**:  
   A directory used to store the `.m2` repository for Maven dependencies during test execution. This ensures that the containerized environment can access required dependencies efficiently without re-downloading them for each run.
