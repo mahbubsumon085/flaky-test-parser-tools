@@ -31,10 +31,10 @@ The input data is stored in the data folder, which contains zipped files. Our au
   A patch file used to generate the flaky version with additional code changes from the `Flaky` folder. 
 
 - **`Flakym2`**:  
-  A directory used to store the `.m2` repository for Maven dependencies during test execution. This ensures that the containerized environment can access required dependencies efficiently without re-downloading them for each run.
+  A directory used to store the `.m2` repository for maven dependencies during test execution. This ensures that the containerized environment can access required dependencies efficiently without re-downloading them for each run.
 
 - **`Fixedm2`**:  
-  A directory used to store the `.m2` repository for Maven dependencies specific to the fixed version. If the dependencies for the fixed version are the same as those in `Flakym2`, this directory will not be present in the data directory, as `Flakym2` can handle Maven execution requirements.
+  A directory used to store the `.m2` repository for maven dependencies specific to the fixed version. If the dependencies for the fixed version are the same as those in `Flakym2`, this directory will not be present in the data directory, as `Flakym2` can handle Maven execution requirements.
 
 ## Output
 After executing the script, the following outputs will be generated and stored as the `result` directory inside the corresponding `data` folder on the host machine. The results are organized into subdirectories based on the version codes: `Flaky`, `FlakyCodeChange`, `Fixed`, `FixedPassingOrder`, `FlakyPassingOrder`, and `FixedCodeChange`.
@@ -97,7 +97,7 @@ The following are the key files for test analysis and in generating statistics:
 
 - **`flaky_analysis_tool_td.sh`**:  
   A comprehensive script designed to execute and manage the analysis of a single timing dependent flaky test across various code versions within a Docker container:
-  - Parameters for `flaky_analysis_tool.sh`
+  - Parameters for `flaky_analysis_tool_td.sh`
    - **`moduleName`**:  
      The relative path of the module from the root directory.  
      Example: `bookkeeper-server`.
@@ -166,7 +166,7 @@ The following are the key files for test analysis and in generating statistics:
   ```   
 
 - **`test_config.csv`**:  
-  This CSV files contains the meta deta to run the tools, mainly used by `runner.sh`. It contains test type, test folder name inside `data` folder (mainly issue id), module, preceding_test (for od only), flaky_test, iterations, config (`All`, `Flaky`, `FixedPassingOrder`, `Fixed`, `FlakyPassingOrder`, `FlakyCodeChange`, `FixedCodeChange`)  
+  This CSV files contains the meta data to run the tools, mainly used by `runner.sh`. It contains test type, test folder name inside `data` folder (mainly issue id), module, preceding_test (for od only), flaky_test, iterations, config (`All`, `Flaky`, `FixedPassingOrder`, `Fixed`, `FlakyPassingOrder`, `FlakyCodeChange`, `FixedCodeChange`)  
  
 - **`runner.sh`**:   
  It works as wrapper to run appropriate flaky analysis tools based on the data it received from `test_config.csv`. It reads test configurations from the CSV file and runs the appropriate analysis tool based on the test type and module.
