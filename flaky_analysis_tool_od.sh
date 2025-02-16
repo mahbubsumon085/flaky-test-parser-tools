@@ -18,7 +18,7 @@ if [ -f "${BASE_DIR}.zip" ]; then
     unzip -o "${BASE_DIR}.zip" -d "data/" || { echo "Failed to unzip ${BASE_DIR}.zip"; exit 1; }
 fi
 
-BASE_IMAGE_NAME="flaky_base_jdk8"
+BASE_IMAGE_NAME="flaky_base_jdk8_od"
 PROTO_IMAGE_NAME="flaky_proto_od_jdk8" # Image built from Dockerfile.proto
 CONTAINER_NAME="container_hadoop_10207"
 RESULT_DIR="${BASE_DIR}/result"
@@ -109,13 +109,13 @@ fi
 # Step 1: Build the base image if not present
 if ! docker images | grep -q "$BASE_IMAGE_NAME"; then
     echo "Docker image $BASE_IMAGE_NAME not found. Building it using Dockerfile..."
-    docker build -t $BASE_IMAGE_NAME -f Dockerfile .
+    docker build -t $BASE_IMAGE_NAME -f Dockerfile.od .
 fi
 
 # Step 2: Build the proto image if not present
 if ! docker images | grep -q "$PROTO_IMAGE_NAME"; then
     echo "Docker image $PROTO_IMAGE_NAME not found. Building it using Dockerfile.proto..."
-    docker build -t $PROTO_IMAGE_NAME -f Dockerfile.proto .
+    docker build -t $PROTO_IMAGE_NAME -f Dockerfile.odproto .
 fi
 
 # Ensure the result directory exists and clean up any initial module folder

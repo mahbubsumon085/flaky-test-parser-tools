@@ -2,3 +2,10 @@ test_type,issue_id,module,preceding_test,flaky_test,iterations,config
 td,BOOKKEEPER-709,bookkeeper-server,,org.apache.bookkeeper.client.SlowBookieTest#testSlowBookie,2,All
 od,HADOOP-10207,hadoop-common-project/hadoop-common,org.apache.hadoop.security.TestUserGroupInformation#testGetServerSideGroups,org.apache.hadoop.security.TestUserGroupInformation#testLogin,2,All
 td,YARN-9405,hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-services/hadoop-yarn-services-core,,org.apache.hadoop.yarn.service.TestYarnNativeServices#testExpressUpgrade,2,All
+td,BOOKKEEPER-846,bookkeeper-server,,org.apache.bookkeeper.client.TestLedgerChecker#testShouldGetTwoFrgamentsIfTwoBookiesFailedInSameEnsemble,2,All
+td,CAMEL-17188,core/camel-support,,org.apache.camel.support.task.BackgroundTaskTest#testRunNoMoreSupplier,2,All
+td,HDFS-10281,hadoop-hdfs-project/hadoop-hdfs,,org.apache.hadoop.hdfs.server.namenode.ha.TestPendingCorruptDnMessages#testChangedStorageId,2,All
+td,OOZIE-3683,core,,org.apache.oozie.sla.TestSLACalculatorMemory#testLoadOnRestart,2,All
+td,OOZIE-3685,core,,org.apache.oozie.command.coord.TestCoordActionInputCheckXCommand#testCoordActionInputCheckXCommandUniqueness,2,All
+td,BOOKKEEPER-774,bookkeeper-server,,org.apache.bookkeeper.test.ReadOnlyBookieTest#testBookieShouldTurnWritableFromReadOnly,2,All
+id,NIFI-100,nifi-nar-bundles/nifi-solr-bundle/nifi-solr-processors,,org.apache.nifi.processors.solr.TestQuerySolr#testAttributes,2,All

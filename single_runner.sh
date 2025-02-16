@@ -47,6 +47,15 @@ for line in "${csv_lines[@]}"; do
         fi
         chmod +x "$script_name"
         bash "$script_name" "$issue_id" "$module" "$flaky_test" "$iterations" "$config"
+        
+    elif [[ "$test_type" == "id" ]]; then
+        if [[ "$module" =~ ^hadoop ]]; then
+            script_name="flaky_analysis_tool_id.sh"
+        else
+            script_name="flaky_analysis_tool_id.sh"
+        fi
+        chmod +x "$script_name"
+        bash "$script_name" "$issue_id" "$module" "$flaky_test" "$iterations" "$config"
     else
         echo "Unknown test_type: $test_type, skipping..."
     fi

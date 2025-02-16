@@ -8,8 +8,8 @@ ITERATIONS=${4:-5}
 CODE_VERSION=${5:-"All"} # New parameter: CodeVersion
 # Docker and container related variables
 
-IMAGE_NAME="flaky_base_jdk8"
-CONTAINER_NAME="container_bookkeeper_709"
+IMAGE_NAME="flaky_base_jdk_11_id"
+CONTAINER_NAME="$DATA_FOLDER"
 DIR_TO_PYTHON_SCRIPT="/app/source"
 # Define base directory path
 BASE_DIR="data/${DATA_FOLDER}"
@@ -23,12 +23,8 @@ fi
 # Define constants for directories and patch files
 FLAKY_DIR="${BASE_DIR}/Flaky"
 FLAKY_M2_DIR="${BASE_DIR}/Flakym2/.m2"
-FLAKY_CODE_CHANGE_DIR="${BASE_DIR}/FlakyCodeChange"
 FIXED_DIR="${BASE_DIR}/Fixed"
-FIXED_CODE_CHANGE_DIR="${BASE_DIR}/FixedCodeChange"
-FLAKY_CODE_CHANGE_PATCH="${BASE_DIR}/FlakyCodeChange.patch"
 FIXED_PATCH="${BASE_DIR}/Fixed.patch"
-FIXED_CODE_CHANGE_PATCH="${BASE_DIR}/FIXED_CODE_CHANGE.patch"
 RESULT_DIR="${BASE_DIR}/result"
 
 
@@ -52,8 +48,8 @@ if [ -d "$FLAKY_DIR" ]; then
     # Clone fresh python-scripts from the specified GIT_URL and COMMIT_SHA
 
     echo "Copying Python scripts to $FLAKY_DIR..."
-    cp -r python-scripts "$FLAKY_DIR/" || { echo "Failed to copy Python scripts"; exit 1; }
-    cp statistics_generator.sh "$FLAKY_DIR/" || { echo "Failed to copy statistics_generator.sh"; exit 1; }
+   #  cp -r python-scripts "$FLAKY_DIR/" || { echo "Failed to copy Python scripts"; exit 1; }
+    cp id_statistics_generator.sh "$FLAKY_DIR/" || { echo "Failed to copy statistics_generator.sh"; exit 1; }
 else
     echo "Flaky folder does not exist. Skipping scripts deletion and cloning."
     sleep 5
@@ -78,12 +74,7 @@ create_folder_with_patch() {
     echo "Successfully created $TARGET_DIR."
 }
 
-# Ensure necessary directories are created
-if [[ "$CODE_VERSION" == "All" || "$CODE_VERSION" == "FlakyCodeChange" ]]; then
-    if [[ ! -d "$FLAKY_CODE_CHANGE_DIR" ]]; then
-        create_folder_with_patch "$FLAKY_DIR" "$FLAKY_CODE_CHANGE_PATCH" "$FLAKY_CODE_CHANGE_DIR"
-    fi
-fi
+
 
 if [[ "$CODE_VERSION" == "All" || "$CODE_VERSION" == "Fixed" ]]; then
     if [[ ! -d "$FIXED_DIR" ]]; then
@@ -91,36 +82,25 @@ if [[ "$CODE_VERSION" == "All" || "$CODE_VERSION" == "Fixed" ]]; then
     fi
 fi
 
-if [[ "$CODE_VERSION" == "All" || "$CODE_VERSION" == "FixedCodeChange" ]]; then
-    if [[ ! -d "$FIXED_CODE_CHANGE_DIR" ]]; then
-        create_folder_with_patch "$FLAKY_DIR" "$FIXED_CODE_CHANGE_PATCH" "$FIXED_CODE_CHANGE_DIR"
-    fi
-fi
 # Determine which versions to process based on CodeVersion
 SOURCE_DIRS=()
 M2_DIRS=()
 
 case "$CODE_VERSION" in
     "All")
-        SOURCE_DIRS=("$FLAKY_DIR" "$FLAKY_CODE_CHANGE_DIR" "$FIXED_DIR" "$FIXED_CODE_CHANGE_DIR")
-        M2_DIRS=("$FLAKY_M2_DIR" "$FLAKY_M2_DIR" "$FIXED_M2_DIR" "$FIXED_M2_DIR")
+        SOURCE_DIRS=("$FLAKY_DIR"  "$FIXED_DIR" )
+        M2_DIRS=("$FLAKY_M2_DIR"  "$FIXED_M2_DIR")
         ;;
     "Flaky")
         SOURCE_DIRS=("$FLAKY_DIR")
         M2_DIRS=("$FLAKY_M2_DIR")
         ;;
-    "FlakyCodeChange")
-        SOURCE_DIRS=("$FLAKY_CODE_CHANGE_DIR")
-        M2_DIRS=("$FLAKY_M2_DIR")
-        ;;
+   
     "Fixed")
         SOURCE_DIRS=("$FIXED_DIR")
         M2_DIRS=("$FIXED_M2_DIR")
         ;;
-    "FixedCodeChange")
-        SOURCE_DIRS=("$FIXED_CODE_CHANGE_DIR")
-        M2_DIRS=("$FIXED_M2_DIR")
-        ;;
+
     *)
         echo "Invalid CodeVersion specified. Use one of: All, Flaky, FlakyCodeChange, Fixed, FixedCodeChange."
         sleep 5
@@ -134,7 +114,7 @@ mkdir -p "$RESULT_DIR"
 
 # Step 1: Build the Docker image
 echo "Building Docker image with BeautifulSoup and lxml..."
-docker build -t $IMAGE_NAME .
+docker build -t $IMAGE_NAME -f Dockerfile.id .
 
 # Process each source and `.m2` directory
 for i in "${!SOURCE_DIRS[@]}"; do
@@ -147,7 +127,6 @@ for i in "${!SOURCE_DIRS[@]}"; do
     echo "Starting the container for source: $SRC_DIR and m2: $M2_DIR..."
     docker run -d --name $CONTAINER_NAME \
         -e MODULE="$MODULE" \
-        -e DIR_TO_PYTHON_SCRIPT="$DIR_TO_PYTHON_SCRIPT" \
         -e FULL_TEST_NAME="$FULL_TEST_NAME" \
         -e ITERATIONS="$ITERATIONS" \
         $IMAGE_NAME tail -f /dev/null
@@ -160,13 +139,13 @@ for i in "${!SOURCE_DIRS[@]}"; do
 
     # Step 4: Run the statistics generator script inside the container
     echo "Running the statistics generator script..."
-    docker exec -it $CONTAINER_NAME /bin/bash -c "cd /app/source && chmod +x statistics_generator.sh && ./statistics_generator.sh \"$MODULE\" \"$DIR_TO_PYTHON_SCRIPT\" \"$FULL_TEST_NAME\" \"$ITERATIONS\""
+    docker exec -it $CONTAINER_NAME /bin/bash -c "cd /app/source && chmod +x id_statistics_generator.sh && ./id_statistics_generator.sh \"$MODULE\" \"$FULL_TEST_NAME\" \"$ITERATIONS\""
 
     # Step 5: Copy results back to the host
     echo "Copying results from container to $FLAKY_RESULT_DIR..."
     mkdir -p "$FLAKY_RESULT_DIR"
     docker cp "$CONTAINER_NAME:/app/source/flaky-result/." "$FLAKY_RESULT_DIR"
-    docker cp "$CONTAINER_NAME:/root/.m2/." "$FLAKY_RESULT_DIR"
+    # docker cp "$CONTAINER_NAME:/root/.m2/." "$FLAKY_RESULT_DIR"
     # Step 6: Stop and remove the container
     echo "Stopping and removing the container..."
     docker stop $CONTAINER_NAME

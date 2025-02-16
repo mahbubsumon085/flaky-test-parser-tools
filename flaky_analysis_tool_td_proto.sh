@@ -8,9 +8,9 @@ ITERATIONS=${4:-5}
 CODE_VERSION=${5:-"All"} # New parameter: CodeVersion
 # Docker and container related variables
 
-BASE_IMAGE_NAME="flaky_base_jdk8"
-PROTO_IMAGE_NAME="flaky_proto_od_jdk8" # Image built from Dockerfile.proto
-CONTAINER_NAME="container_yarn_9405"
+BASE_IMAGE_NAME="flaky_base_jdk8_new"
+PROTO_IMAGE_NAME="flaky_proto_od_jdk8_new" # Image built from Dockerfile.proto
+CONTAINER_NAME="container_yarn_9407"
 DIR_TO_PYTHON_SCRIPT="/app/source"
 
 # Define constants for directories
@@ -179,6 +179,11 @@ for i in "${!SOURCE_DIRS[@]}"; do
     echo "Copying results from container to $FLAKY_RESULT_DIR..."
     mkdir -p "$FLAKY_RESULT_DIR"
     docker cp "$CONTAINER_NAME:/app/source/flaky-result/." "$FLAKY_RESULT_DIR"
+    
+       # Step 6: Copy the `.m2` directory back from the container
+    echo "Copying .m2 directory from container to $M2_RESULT_DIR..."
+
+    docker cp "$CONTAINER_NAME:/root/.m2/." "$FLAKY_RESULT_DIR"
 
     # Step 6: Stop and remove the container
     echo "Stopping and removing the container..."
