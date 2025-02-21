@@ -166,7 +166,7 @@ for i in "${!SOURCE_DIRS[@]}"; do
     echo "Copying results from container to $FLAKY_RESULT_DIR..."
     mkdir -p "$FLAKY_RESULT_DIR"
     docker cp "$CONTAINER_NAME:/app/source/flaky-result/." "$FLAKY_RESULT_DIR"
-    docker cp "$CONTAINER_NAME:/root/.m2/." "$FLAKY_RESULT_DIR"
+    # docker cp "$CONTAINER_NAME:/root/.m2/." "$FLAKY_RESULT_DIR"
     # Step 6: Stop and remove the container
     echo "Stopping and removing the container..."
     docker stop $CONTAINER_NAME

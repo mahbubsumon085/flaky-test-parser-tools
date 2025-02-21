@@ -51,6 +51,8 @@ for line in "${csv_lines[@]}"; do
     elif [[ "$test_type" == "id" ]]; then
         if [[ "$module" =~ ^hadoop ]]; then
             script_name="flaky_analysis_tool_id.sh"
+        elif [[ "$module" =~ ^hdfs-connector ]]; then
+            script_name="flaky_analysis_tooljdk8_id.sh"
         else
             script_name="flaky_analysis_tool_id.sh"
         fi

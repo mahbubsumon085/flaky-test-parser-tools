@@ -8,7 +8,7 @@ ITERATIONS=${4:-5}
 CODE_VERSION=${5:-"All"} # New parameter: CodeVersion
 # Docker and container related variables
 
-IMAGE_NAME="flaky_base_jdk_11_id"
+IMAGE_NAME="flaky_base_jdk_8_id"
 CONTAINER_NAME="$DATA_FOLDER"
 DIR_TO_PYTHON_SCRIPT="/app/source"
 # Define base directory path
@@ -48,7 +48,7 @@ if [ -d "$FLAKY_DIR" ]; then
 
     echo "Copying Python scripts to $FLAKY_DIR..."
    #  cp -r python-scripts "$FLAKY_DIR/" || { echo "Failed to copy Python scripts"; exit 1; }
-    cp id_statistics_generator.sh "$FLAKY_DIR/" || { echo "Failed to copy statistics_generator.sh"; exit 1; }
+    cp id_jdk8_statistics_generator.sh "$FLAKY_DIR/" || { echo "Failed to copy statistics_generator.sh"; exit 1; }
 else
     echo "Flaky folder does not exist. Skipping scripts deletion and cloning."
     sleep 5
@@ -113,7 +113,7 @@ mkdir -p "$RESULT_DIR"
 
 # Step 1: Build the Docker image
 echo "Building Docker image with BeautifulSoup and lxml..."
-docker build -t $IMAGE_NAME -f Dockerfile.id .
+docker build -t $IMAGE_NAME -f Dockerfilej.dk8id .
 
 # Process each source and `.m2` directory
 for i in "${!SOURCE_DIRS[@]}"; do
@@ -138,7 +138,7 @@ for i in "${!SOURCE_DIRS[@]}"; do
 
     # Step 4: Run the statistics generator script inside the container
     echo "Running the statistics generator script..."
-    docker exec -it $CONTAINER_NAME /bin/bash -c "cd /app/source && chmod +x id_statistics_generator.sh && ./id_statistics_generator.sh \"$MODULE\" \"$FULL_TEST_NAME\" \"$ITERATIONS\""
+    docker exec -it $CONTAINER_NAME /bin/bash -c "cd /app/source && chmod +x id_jdk8_statistics_generator.sh && ./id_jdk8_statistics_generator.sh \"$MODULE\" \"$FULL_TEST_NAME\" \"$ITERATIONS\""
 
     # Step 5: Copy results back to the host
     echo "Copying results from container to $FLAKY_RESULT_DIR..."

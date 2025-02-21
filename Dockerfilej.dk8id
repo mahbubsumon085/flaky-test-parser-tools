@@ -1,0 +1,18 @@
+# Use an Ubuntu-based image with Java 11 and Maven installed
+FROM maven:3.8.6-openjdk-8
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Make your scripts executable
+#RUN chmod +x /app/run_nondex.sh /app/run_test_flaky_nondex_mod.sh /app/run_test_fixed_nondex_mod.sh
+
+# Install xmllint (libxml2-utils)
+RUN apt update && apt install -y libxml2-utils
+
+# Install NonDex Maven plugin
+RUN mvn edu.illinois:nondex-maven-plugin:2.1.1:help -q
+
+# Automatically run the flaky test script with the required arguments
+CMD ["./run_flaky_nondex_mod.sh", "nifi-nar-bundles/nifi-solr-bundle/nifi-solr-processors", "org.apache.nifi.processors.solr.TestQuerySolr#testAttributes", "5"]
+
