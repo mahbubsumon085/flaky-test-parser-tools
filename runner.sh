@@ -14,7 +14,7 @@ mapfile -t csv_lines < <(tail -n +2 "$CSV_FILE")  # Skip the header
 echo "CSV Lines Read: ${#csv_lines[@]}"
 
 for line in "${csv_lines[@]}"; do
-    IFS=, read -r test_type issue_id module preceding_test flaky_test iterations config <<< "$line"
+    IFS=, read -r test_type issue_id zip module preceding_test flaky_test iterations config <<< "$line"
 
     echo "Processing: test_type=$test_type, issue_id=$issue_id, module=$module, preceding_test=$preceding_test, flaky_test=$flaky_test, iterations=$iterations, config=$config"
 
@@ -45,7 +45,8 @@ for line in "${csv_lines[@]}"; do
             script_name="flaky_analysis_tool_id.sh"
         fi
         chmod +x "$script_name"
-        bash "$script_name" "$issue_id" "$module" "$flaky_test" "$iterations" "$config"
+        bash "$script_name" "$issue_id" "$zip" "$module" "$flaky_test" "$iterations" "$config"
+
     else
         echo "Unknown test_type: $test_type, skipping..."
     fi

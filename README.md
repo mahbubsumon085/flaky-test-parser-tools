@@ -89,11 +89,29 @@ The following are the key files for test analysis and in generating statistics:
       ./od_statistics_generator.sh hadoop-common-project/hadoop-common org.apache.hadoop.security.TestUserGroupInformation#testGetServerSideGroups org.apache.hadoop.security.TestUserGroupInformation#testLogin 100
     ```
 - **`Dockerfile`**:  
-  A configuration file for building the Docker image used in flaky test analysis. It sets up a Java 8 and Maven environment, installs required dependencies (e.g., Protobuf tools, Python, BeautifulSoup, lxml), and defines a default command to run the `statistics_generator.sh` script, which is retrieved from the script repository. 
+  A configuration file for building the Docker image used in flaky test analysis. It sets up a Java 8 and Maven environment, installs required dependencies (e.g., Python, BeautifulSoup, lxml), and defines a default command to run the `statistics_generator.sh` script, wwhich is available int the script repository. 
 
 - **`Dockerfile.proto`**:  
 
   This `Dockerfile.proto` sets up a custom Docker image to add extended protobuf 2.5.0 dependency for hadoop project. It extends `flaky_base_jdk8` (Please see `flaky_analysis_tool.sh`) image based on `Dockerfile`.
+
+- **`Dockerfile.id`**:  
+
+   A configuration file for building the Docker image used in flaky test analysis for id-related flaky test to run with nondex plugin. It sets up a Java 11 and Maven environment, installs required dependencies (e.g., xmllint), and to run the `id_statistics_generator.sh` script, which is available int the script repository. 
+
+- **`Dockerfilej.dk8id`**:  
+
+  A configuration file for building the Docker image used in flaky test analysis for id-related flaky test to run with nondex plugin. It sets up a Java 8 and Maven environment, installs required dependencies (e.g., xmllint), and to run the `id_jdk8_statistics_generator.sh` script, which is available int the script repository. 
+
+- **`Dockerfile.od`**:  
+
+  A configuration file for building the Docker image used in flaky test analysis for od-related flaky test to run with custom surefire. It sets up a Java 8 and Maven environment with [custom surefire](https://github.com/TestingResearchIllinois/maven-surefire), installs required dependencies (e.g., Python, BeautifulSoup, lxml), and to run the `od_statistics_generator.sh` script, which is available int the script repository. 
+
+- **`Dockerfile.odproto`**:  
+
+   This `Dockerfile.odproto` sets up a custom Docker image to add extended protobuf 2.5.0 dependency for hadoop project. It extends `flaky_base_jdk8_od` (Please see `flaky_analysis_tool_od_proto`) image based on `Dockerfile.od`. 
+
+
 
 - **`flaky_analysis_tool_td.sh`**:  
   A comprehensive script designed to execute and manage the analysis of a single timing dependent flaky test across various code versions within a Docker container:
@@ -133,10 +151,10 @@ The following are the key files for test analysis and in generating statistics:
  
   ```
 
-- **`flaky_analysis_tool_od.sh`**:  
+- **`flaky_analysis_tool_od_proto.sh`**:  
   A comprehensive script designed to execute and manage the analysis of a single order-dependent flaky test across various code versions within a Docker container.
 
-  -  Parameters for `flaky_analysis_tool_od.sh`
+  -  Parameters for `flaky_analysis_tool_od_proto.sh`
   - **`moduleName`**:  
     The relative path of the module from the root directory.  
     Example: `bookkeeper-server`.

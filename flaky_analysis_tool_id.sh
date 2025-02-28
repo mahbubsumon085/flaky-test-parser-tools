@@ -1,23 +1,34 @@
 #!/bin/bash
 
 # Set default iteration count if not provided
-DATA_FOLDER=$1
-MODULE=$2
-FULL_TEST_NAME=$3
-ITERATIONS=${4:-5}
-CODE_VERSION=${5:-"All"} # New parameter: CodeVersion
+TEST_FOLDER_NAME=$1
+DATA_FOLDER=$2
+MODULE=$3
+FULL_TEST_NAME=$4
+ITERATIONS=${5:-5}
+CODE_VERSION=${6:-"All"} # New parameter: CodeVersion
 # Docker and container related variables
 
 IMAGE_NAME="flaky_base_jdk_11_id"
-CONTAINER_NAME="$DATA_FOLDER"
+CONTAINER_NAME="$TEST_FOLDER_NAME"
 DIR_TO_PYTHON_SCRIPT="/app/source"
 # Define base directory path
-BASE_DIR="data/${DATA_FOLDER}"
+BASE_DIR="data/${TEST_FOLDER_NAME}"
+ZIP_DATA_CONTAINER="data/${DATA_FOLDER}"
+
 
 # Unzip the data folder if it exists in zip format
-if [ -f "${BASE_DIR}.zip" ]; then
-    echo "Unzipping ${BASE_DIR}.zip..."
-    unzip -o "${BASE_DIR}.zip" -d "data/" || { echo "Failed to unzip ${BASE_DIR}.zip"; exit 1; }
+# Unzip the data folder if it exists in zip format
+if [ -f "${ZIP_DATA_CONTAINER}.zip" ]; then
+    echo "Unzipping ${ZIP_DATA_CONTAINER}.zip into ${BASE_DIR}..."
+    mkdir -p "${BASE_DIR}"
+    unzip -o "${ZIP_DATA_CONTAINER}.zip" -d "${BASE_DIR}" > /dev/null || { echo "Failed to unzip ${ZIP_DATA_CONTAINER}.zip"; exit 1; }
+
+    # Move extracted files from ${BASE_DIR}/${DATA_FOLDER} to ${BASE_DIR}, then remove the extra folder
+    if [ -d "${BASE_DIR}/${DATA_FOLDER}" ]; then
+        mv "${BASE_DIR}/${DATA_FOLDER}/"* "${BASE_DIR}/"
+        rmdir "${BASE_DIR}/${DATA_FOLDER}"
+    fi
 fi
 
 # Define constants for directories and patch files
@@ -27,7 +38,7 @@ FIXED_DIR="${BASE_DIR}/Fixed"
 FIXED_PATCH="${BASE_DIR}/Fixed.patch"
 RESULT_DIR="${BASE_DIR}/result"
 
-# Determine FIXED_M2_DIR based on the presence of Fixedm2 directory
+ # Determine FIXED_M2_DIR based on the presence of Fixedm2 directory
 if [ -d "${BASE_DIR}/Fixedm2" ]; then
     FIXED_M2_DIR="${BASE_DIR}/Fixedm2/.m2"
 else
