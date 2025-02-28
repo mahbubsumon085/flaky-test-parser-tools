@@ -95,3 +95,11 @@ id,SCB-2731,SCB-2731,common/common-rest,,org.apache.servicecomb.common.rest.code
 Unclassified,RATIS-506,RATIS-506,ratis-test,,org.apache.ratis.server.simulation.TestServerRestartWithSimulatedRpc#testRestartCommitIndex,10,All
 Unclassified,HDFS-15904,HDFS-15904,hadoop-hdfs-project/hadoop-hdfs,,org.apache.hadoop.hdfs.server.balancer.TestBalancer#testBalancerWithSortTopNodes,10,All
 Unclassified,HDFS-12417,HDFS-12417,hadoop-hdfs-project/hadoop-hdfs,,org.apache.hadoop.hdfs.TestDFSStripedOutputStreamWithFailure#testBlockTokenExpired,10,All
+td,CAMEL-19028,CAMEL-19028,,,org.apache.camel.processor.WireTapAbortPolicyTest#testSend,10,All
+td,CURATOR-681,CURATOR-681,,,org.apache.curator.framework.recipes.locks.TestInterProcessMutex#testReentrantSingleLock,10,All
+td,CURATOR-671,CURATOR-671,,,org.apache.curator.framework.recipes.leader.TestLeaderSelectorCluster#testLostRestart,10,All
+td,APEXCORE-403,APEXCORE-403,,,com.datatorrent.stram.plan.logical.DelayOperatorTest#testFibonacciRecovery1,10,All
+td,APEXCORE-453,APEXCORE-453,,,com.datatorrent.stram.plan.logical.DelayOperatorTest#testFibonacci,10,All
+td,COLLECTIONS-812,COLLECTIONS-812,,,org.apache.commons.collections4.properties.EmptyPropertiesTest#testSave,10,All
+id,COLLECTIONS-836,COLLECTIONS-836,,,org.apache.commons.collections4.bidimap.DualHashBidiMapTest#testBidiKeySetValuesOrder,10,All
+id,NIFI-10629,NIFI-10629,,,org.apache.nifi.cluster.coordination.http.replication.okhttp.TestJsonEntitySerializer#testBulletinEntity,,
