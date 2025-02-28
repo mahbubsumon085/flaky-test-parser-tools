@@ -21,7 +21,7 @@ for line in "${csv_lines[@]}"; do
     # Determine script based on test type and project
     if [[ "$test_type" == "od" ]]; then
         if [[ "$module" =~ ^hadoop ]]; then
-            script_name="flaky_analysis_tool_od.sh"
+            script_name="flaky_analysis_tool_od_proto.sh"
             chmod +x "$script_name"
             bash "$script_name" "$issue_id" "$module" "$preceding_test" "$flaky_test" "$iterations" "$config"
         else
