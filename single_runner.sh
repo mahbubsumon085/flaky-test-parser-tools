@@ -34,11 +34,12 @@ for line in "${csv_lines[@]}"; do
     if [[ "$test_type" == "od" ]]; then
         if [[ "$module" =~ ^hadoop ]]; then
             script_name="flaky_analysis_tool_od_proto.sh"
-            chmod +x "$script_name"
-            bash "$script_name" "$issue_id" "$module" "$preceding_test" "$flaky_test" "$iterations" "$config"
         else
-            echo "Skipping OD execution for non-Hadoop module, it will be added later when data will be available: $module"
+             script_name="flaky_analysis_tool_od.sh"
         fi
+        chmod +x "$script_name"
+        bash "$script_name" "$issue_id"  "$zip" "$module" "$preceding_test" "$flaky_test" "$iterations" "$config"
+
     elif [[ "$test_type" == "td" ]]; then
         if [[ "$module" =~ ^hadoop ]]; then
             script_name="flaky_analysis_tool_td_proto.sh"
@@ -46,7 +47,7 @@ for line in "${csv_lines[@]}"; do
             script_name="flaky_analysis_tool_td.sh"
         fi
         chmod +x "$script_name"
-        bash "$script_name" "$issue_id" "$module" "$flaky_test" "$iterations" "$config"
+        bash "$script_name" "$issue_id" "$zip" "$module" "$flaky_test" "$iterations" "$config"
         
     elif [[ "$test_type" == "id" ]]; then
         if [[ "$module" =~ ^hadoop ]]; then

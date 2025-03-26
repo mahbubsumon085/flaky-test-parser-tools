@@ -18,7 +18,6 @@ ZIP_DATA_CONTAINER="data/${DATA_FOLDER}"
 
 
 # Unzip the data folder if it exists in zip format
-# Unzip the data folder if it exists in zip format
 if [ -f "${ZIP_DATA_CONTAINER}.zip" ]; then
     echo "Unzipping ${ZIP_DATA_CONTAINER}.zip into ${BASE_DIR}..."
     mkdir -p "${BASE_DIR}"

@@ -29,7 +29,6 @@ if [ -f "${ZIP_DATA_CONTAINER}.zip" ]; then
 fi
 
 BASE_IMAGE_NAME="flaky_base_jdk8_od"
-PROTO_IMAGE_NAME="flaky_proto_od_jdk8" # Image built from Dockerfile.proto
 CONTAINER_NAME="container_hadoop_10207"
 RESULT_DIR="${BASE_DIR}/result"
 
@@ -122,11 +121,7 @@ if ! docker images | grep -q "$BASE_IMAGE_NAME"; then
     docker build -t $BASE_IMAGE_NAME -f Dockerfile.od .
 fi
 
-# Step 2: Build the proto image if not present
-if ! docker images | grep -q "$PROTO_IMAGE_NAME"; then
-    echo "Docker image $PROTO_IMAGE_NAME not found. Building it using Dockerfile.proto..."
-    docker build -t $PROTO_IMAGE_NAME -f Dockerfile.odproto .
-fi
+
 
 # Ensure the result directory exists and clean up any initial module folder
 mkdir -p "$RESULT_DIR"
@@ -214,7 +209,7 @@ for i in "${!SOURCE_DIRS[@]}"; do
         -e PRECEDING_TEST="$CURRENT_PRECEDING_TEST" \
         -e FLAKY_TEST="$CURRENT_FLAKY_TEST" \
         -e ITERATIONS="$ITERATIONS" \
-        $PROTO_IMAGE_NAME tail -f /dev/null
+        $BASE_IMAGE_NAME tail -f /dev/null
 
     # Step 4: Copy the source and m2 directories from the host to the container
     echo "Copying $SRC_DIR and $M2_DIR into the container..."
