@@ -33,7 +33,7 @@ EXEC_IDS=$(echo "$OUTPUT" | grep "nondexExecid=" | sed -E 's/.*nondexExecid=([^\
 SEEDS=$(echo "$OUTPUT" | grep "nondexSeed=" | sed -E 's/.*nondexSeed=([^\ ]+).*/\1/')
 
 # Initialize CSV header
-echo "Iteration,Execution ID,Seed,XML File,Total Tests,Total Success,Total Failures,Total Errors,Total Skipped,Total Time" > "$CSV_FILE"
+echo "Iteration,Execution ID,Seed,XML File,Result,Total Success,Total Failures,Total Errors,Total Skipped,Total Time" > "$CSV_FILE"
 
 total_success_count=0
 total_failure_count=0
@@ -78,8 +78,18 @@ while IFS=',' read -r line seed; do
             total_success_count=$((total_success_count + total_success))
             total_failure_count=$((total_failure_count + total_failure))
 
+            if [ "$total_success" -gt 0 ]; then
+               result="pass"
+            elif [ "$total_failures" -gt 0 ]; then
+               result="failure"
+            elif [ "$total_errors" -gt 0 ]; then
+               result="error"
+            else
+               result="unknown"
+            fi
+
             # Write results to CSV
-            echo "$iteration,$line,$seed,$xml_file,$total_tests,$total_success,$total_failures,$total_errors,$total_skipped,$total_time" >> "$CSV_FILE"
+            echo "$iteration,$line,$seed,$xml_file,$result,$total_time" >> "$CSV_FILE"
         else
             echo "Error: File $TXT_FILE or $xml_file not found!"
         fi
@@ -89,9 +99,39 @@ while IFS=',' read -r line seed; do
     fi
 done < filtered_output.txt
 
-# Output global results
-echo "Total Successes: $total_success_count"
-echo "Total Failures: $total_failure_count"
+ls -a
+
+# Count pass, failure, and error from column B in rounds-test-results.csv
+# Count pass, failure, and error from column B in rounds-test-results.csv
+while IFS=',' read -r col1 col2 col3 col4 col5 col6; do
+    cleaned_result=$(echo "$col5" | xargs)  # trims spaces/newlines
+    echo "coluumnnnnnnnnnnnnnnnnnnn : $cleaned_result , $pass_count , $fail_count , $error_count"
+
+    if [[ $cleaned_result == "pass" ]]; then
+        ((pass_count++))
+    elif [[ $cleaned_result == "failure" ]]; then
+        ((fail_count++))
+    elif [[ $cleaned_result == "error" ]]; then
+        ((error_count++))
+    fi
+done < <(tail -n +2 "$CSV_FILE")
+
+# Output the counts
+echo "Summary:"
+echo "Passes: $pass_count"
+echo "Failures: $fail_count"
+echo "Errors: $error_count"
+total_rounds=$((pass_count + fail_count + error_count))
+echo "Total Rounds: $total_rounds"
+# Output the counts and log to a summary file
+summary_file="flaky-result/summary.txt"
+{
+    echo "Summary:"
+    echo "Passes: $pass_count"
+    echo "Failures: $fail_count"
+    echo "Errors: $error_count"
+} > "$summary_file"
+
 
 # Move the CSV file to the log directory
 mv $CSV_FILE "flaky-result"

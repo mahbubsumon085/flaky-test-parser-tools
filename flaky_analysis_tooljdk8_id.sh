@@ -12,7 +12,7 @@ ITERATIONS=${5:-5}
 CODE_VERSION=${6:-"All"} # New parameter: CodeVersion
 # Docker and container related variables
 
-IMAGE_NAME="flaky_base_jdk_11_id"
+IMAGE_NAME="flaky_base_jdk_8_id"
 CONTAINER_NAME="$TEST_FOLDER_NAME"
 DIR_TO_PYTHON_SCRIPT="/app/source"
 # Define base directory path

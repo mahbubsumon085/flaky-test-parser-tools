@@ -1,5 +1,5 @@
 test_type,issue_id,zip,module,preceding_test,flaky_test,iterations,config
-td,BOOKKEEPER-709,BOOKKEEPER-709,bookkeeper-server,,org.apache.bookkeeper.client.SlowBookieTest#testSlowBookie,2,All
+td,BOOKKEEPER-709,BOOKKEEPER-709,bookkeeper-server,,org.apache.bookkeeper.client.SlowBookieTest#testSlowBookie,50,All
 od,HADOOP-10207,HADOOP-10207,hadoop-common-project/hadoop-common,org.apache.hadoop.security.TestUserGroupInformation#testGetServerSideGroups,org.apache.hadoop.security.TestUserGroupInformation#testLogin,2,All
 td,YARN-9405,YARN-9405,hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-services/hadoop-yarn-services-core,,org.apache.hadoop.yarn.service.TestYarnNativeServices#testExpressUpgrade,2,All
 td,BOOKKEEPER-846,BOOKKEEPER-846,bookkeeper-server,,org.apache.bookkeeper.client.TestLedgerChecker#testShouldGetTwoFrgamentsIfTwoBookiesFailedInSameEnsemble,2,All
@@ -125,3 +125,7 @@ od,ACCUMULO-2102_testSetInstance_HdfsZooInstance_HostsGiven,ACCUMULO-2102,core,o
 od,ACCUMULO-2102_testSetInstance_HdfsZooInstance_Explicit,ACCUMULO-2102,core,org.apache.accumulo.core.util.shell.ShellSetInstanceTest#testSetInstance_HdfsZooInstance_InstanceGiven,org.apache.accumulo.core.util.shell.ShellSetInstanceTest#testSetInstance_HdfsZooInstance_Explicit,10,All
 od,ACCUMULO-2102_testSetInstance_HdfsZooInstance_Implicit,ACCUMULO-2102,core,org.apache.accumulo.core.util.shell.ShellSetInstanceTest#testSetInstance_HdfsZooInstance_InstanceGiven,org.apache.accumulo.core.util.shell.ShellSetInstanceTest#testSetInstance_HdfsZooInstance_Implicit,10,All
 od,ACCUMULO-2102_testSetInstance_HdfsZooInstance_InstanceGiven,ACCUMULO-2102,core,org.apache.accumulo.core.util.shell.ShellSetInstanceTest#testSetInstance_HdfsZooInstance_HostsGiven,org.apache.accumulo.core.util.shell.ShellSetInstanceTest#testSetInstance_HdfsZooInstance_InstanceGiven,2,All
+td,APEXCORE-403,APEXCORE-403,engine,,com.datatorrent.stram.plan.logical.DelayOperatorTest#testFibonacciRecovery1,10,All
+td,COLLECTIONS-812,COLLECTIONS-812,.,,org.apache.commons.collections4.properties.EmptyPropertiesTest#testSave,10,All
+id,COLLECTIONS-836,COLLECTIONS-836,.,,org.apache.commons.collections4.bidimap.DualHashBidiMapTest#testBidiKeySetValuesOrder,10,All
+id,mercury-journalYamlTest,mercury-journalYamlTest,system/platform-core,,org.platformlambda.core.PostOfficeTest#journalYamlTest,10,All
