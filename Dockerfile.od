@@ -38,5 +38,4 @@ ENV FULL_TEST_NAME=""
 ENV ITERATIONS="5"
 
 # Set the default command to execute the statistics generator script with environment variables as arguments
-CMD ["/bin/bash", "-c", "cd /app/source && chmod +x statistics_generator.sh && ./statistics_generator.sh \"$MODULE\" \"$DIR_TO_PYTHON_SCRIPT\" \"$FULL_TEST_NAME\" \"$ITERATIONS\""]
 

@@ -31,7 +31,13 @@ for line in "${csv_lines[@]}"; do
     echo "Processing: test_type=$test_type, issue_id=$issue_id, zip = $zip module=$module, preceding_test=$preceding_test, flaky_test=$flaky_test, iterations=$iterations, config=$config"
 
     # Determine script based on test type and project
-    if [[ "$test_type" == "od" ]]; then
+    
+    if [[ "$test_type" == "britle" ]]; then
+        script_name="flaky_analysis_tool_od_brittle.sh"
+        chmod +x "$script_name"
+        bash "$script_name" "$issue_id"  "$zip" "$module" "$preceding_test" "$flaky_test" "$iterations" "$config"
+
+    elif [[ "$test_type" == "od" ]]; then
         if [[ "$module" =~ ^hadoop ]]; then
             script_name="flaky_analysis_tool_od_proto.sh"
         else
